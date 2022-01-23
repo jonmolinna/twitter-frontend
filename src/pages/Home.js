@@ -9,7 +9,7 @@ const Home = () => {
             <article className='p-3 border-t border-gray-600 sm:border-t-0 sm:border-r'>
                 <Sidebar />
             </article>
-            <article className='flex-1'>
+            <article className='flex-1 overflow-y-scroll no-scrollbar' >
                 <Post />
             </article>
             <article className='hidden md:flex md:border-l md:border-gray-600 p-3'>

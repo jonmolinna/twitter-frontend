@@ -16,8 +16,18 @@ const Sidebar = () => {
                     <path fillRule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
                 </svg>
                 <article className='hidden md:flex md:flex-col md:ml-2'>
-                    <h3 className='text-sm'>Kendra Contreras</h3>
-                    <p className='text-xs text-gray-500'>@contreras123</p>
+                    <h3
+                        className='text-sm'
+                        style={{ maxWidth: '15ch', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis'}}
+                    >
+                        Kendra Contreras
+                    </h3>
+                    <p
+                        className='text-xs text-gray-500'
+                        style={{ maxWidth: '15ch', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis'}}
+                    >
+                        @contreras123
+                    </p>
                 </article>
             </aside>
         </div>

@@ -4,8 +4,18 @@ const PostBodyHeader = () => {
     return (
         <aside className='flex justify-between'>
             <div className='flex'>
-                <h2 className='text-sm'>Kendra Contreras</h2>
-                <p className='text-sm text-gray-500 mx-2'>@contreras123</p>
+                <h2 
+                    className='text-sm'
+                    style={{ maxWidth: '15ch', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis'}}
+                >
+                    Kendra Contreras
+                </h2>
+                <p
+                    className='text-sm text-gray-500 mx-2'
+                    style={{ maxWidth: '15ch', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis'}}
+                >
+                    @contreras123
+                </p>
                 <time className='text-sm text-gray-500'>1h</time>
             </div>
             <button className='text-gray-500'>
