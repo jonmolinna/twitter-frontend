@@ -1,8 +1,34 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PostBody from './PostBody';
 import PostHeader from './PostHeader';
 
+import axios from '../util/axios';
+
 const Post = () => {
+    const [post, setPost] = useState([]);
+    const token = localStorage.getItem('token-twitter');
+
+    useEffect(() => {
+        const getPostAll = async () => {
+            try {
+                let options = {
+                    method: 'GET',
+                    headers: {
+                        "Content-type" : "application/json; charset=utf-8",
+                        "authorization": token? `Bearer ${token}` : null,
+                    }
+                };
+
+                const res = await axios('/getAllPosts', options);
+                setPost(res.data.posts)
+            } catch (err) {
+                console.log(err.response);
+            }
+        }
+
+        getPostAll();
+    }, [token]);
+
     return (
         <div>
             <aside className='text-white flex justify-between p-3 sticky top-0 bg-black/80'>
@@ -14,14 +40,11 @@ const Post = () => {
             <aside>
                 <PostHeader />
                 <article>
-                    <PostBody />
-                    <PostBody />
-                    <PostBody />
-                    <PostBody />
-                    <PostBody />
-                    <PostBody />
-                    <PostBody />
-                    <PostBody />
+                    {
+                        post && post.map(post => (
+                            <PostBody key={post._id} post={post}/>
+                        ))
+                    }
                 </article>
             </aside>
         </div>

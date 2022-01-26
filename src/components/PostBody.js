@@ -3,7 +3,12 @@ import PostBodyContent from './PostBodyContent';
 import PostBodyFooter from './PostBodyFooter';
 import PostBodyHeader from './PostBodyHeader';
 
-const PostBody = () => {
+const PostBody = ({ post }) => {
+
+    // console.log(post);
+
+    // console.log('POST BODY');
+
     return (
         <div className='text-white flex border-b border-gray-600 p-3'>
             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" className="bi bi-person-circle" viewBox="0 0 16 16">
@@ -11,9 +16,20 @@ const PostBody = () => {
                 <path fillRule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
             </svg>
             <article className='ml-3 flex-1'>
-                <PostBodyHeader />
-                <PostBodyContent />
-                <PostBodyFooter />
+                <PostBodyHeader
+                    user={post.user}
+                    time={post.createdAt}
+                    idPost={post._id} 
+                />
+                <PostBodyContent
+                    comment={post.message}
+                    imagen={post.imagen}
+                />
+                <PostBodyFooter
+                    likes={post.likes}
+                    comments={post.comments}
+                    idPost={post._id}
+                />
             </article>
         </div>
     )
