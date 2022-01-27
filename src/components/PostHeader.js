@@ -1,10 +1,15 @@
 import React, { useState } from 'react';
+import { toast } from 'react-hot-toast';
+
+import axios from '../util/axios';
+import Loading from './Loading';
 
 const PostHeader = () => {
     const [comment, setComment] = useState('');
     const [image, setImage] = useState('');
     const [selectedFile, setSelectedFile] = useState(null);
     const [loading, setLoading] = useState(false);
+    const token = localStorage.getItem('token-twitter');
 
     const handleFileChange = (e) => {
         const [file] = e.target.files;
@@ -21,11 +26,29 @@ const PostHeader = () => {
         e.target.value = '';
     };
 
-    const handleSubmit = () => {
+    const handleSubmitPost = async () => {
+        setLoading(true);
+
         try {
-            
+            let formData = new FormData();
+            formData.append('image', image);
+            formData.append('message', comment);
+
+            let options = {
+                headers: {
+                    "authorization": token? `Bearer ${token}` : null,
+                },
+            };
+
+            await axios.post('/addPost', formData, options);
+            setComment('');
+            setSelectedFile(null);
+            setImage('');
         } catch (err) {
-            console.log(err.response);
+            // console.log(err.response);
+            toast.error(err.response.data.message);
+        } finally {
+            setLoading(false)
         }
     };
 
@@ -74,12 +97,20 @@ const PostHeader = () => {
                         </button>
                     </div>
                     <button 
-                        className='bg-cyan-600 py-1 px-3 rounded-2xl'
-                        onClick={handleSubmit}
+                        className='bg-cyan-600 py-1 px-3 rounded-2xl disabled:bg-cyan-800 disabled:text-gray-500'
+                        onClick={handleSubmitPost}
+                        disabled={image || comment.length > 3? false : true}
                     >
                         Tweet
                     </button>
                 </aside>
+                {
+                    loading && (
+                        <div className='border text-center'>
+                            <Loading />
+                        </div>
+                    )
+                }
                 {
                     selectedFile && (
                         <img
