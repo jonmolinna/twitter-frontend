@@ -5,12 +5,13 @@ import PostBodyFooter from './PostBodyFooter';
 import CommentInput from './CommentInput';
 
 import axios from '../util/axios';
-import { usePostState } from '../context/post';
+import { usePostState, usePostDispatch } from '../context/post';
 import CommentReply from './CommentReply';
 
 const Comment = () => {
     const [post, setPost] = useState(null);
     const { post: postId } = usePostState();
+    const dispatch = usePostDispatch();
     const token = localStorage.getItem('token-twitter');
 
     useEffect(() => {
@@ -37,10 +38,24 @@ const Comment = () => {
         getOnePost();
     }, [postId, token]);
 
+    const removePostID = () => {
+        dispatch({
+            type: 'REMOVE_POST'
+        })
+    };
+
     return (
         <div className='text-white'>
-            <aside>
-                Comment Header
+            <aside className='sticky top-0 p-3 bg-black/80 flex'>
+                <button 
+                    className='text-white'
+                    onClick={removePostID}
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 17l-5-5m0 0l5-5m-5 5h12" />
+                    </svg>
+                </button>
+                <h2 className='ml-3'>Thread</h2>
             </aside>
             {
                 post && (
@@ -80,8 +95,6 @@ const Comment = () => {
                     />
                 ))
             }
-            </aside>
-            <aside>
             </aside>
         </div>
     )

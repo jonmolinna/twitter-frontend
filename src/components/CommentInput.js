@@ -1,6 +1,36 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { toast } from 'react-hot-toast';
+
+import axios from '../util/axios';
+import { usePostState } from '../context/post';
 
 const CommentInput = () => {
+    const [comment, setComment] = useState('');
+    const { post: postId } = usePostState();
+    const token = localStorage.getItem('token-twitter');
+
+    const handleSubmitPostComment = async () => {
+        try {
+            let options = {
+                method: "PUT",
+                headers: {
+                    "Content-type" : "application/json; charset=utf-8",
+                    "authorization": token? `Bearer ${token}` : null,
+                },
+                data: JSON.stringify({
+                    comment: comment
+                })
+            };
+
+            const res = await axios(`addComment/${postId}`, options);
+            console.log(res);
+            setComment('');
+
+        } catch (err) {
+            toast.error(err.response.data.message);
+        }
+    };
+
     return (
         <div className='text-white flex'>
             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" className="bi bi-person-circle" viewBox="0 0 16 16">
@@ -12,10 +42,16 @@ const CommentInput = () => {
                     rows="2"
                     placeholder='Tweet your reply'
                     className='w-full text-white border-none outline-none resize-none bg-black'
+                    value={comment}
+                    onChange={e => setComment(e.target.value)}
                 >    
                 </textarea>
                 <aside className='mt-2 flex flex-row-reverse'>
-                    <button className='bg-cyan-600 py-1 px-3 rounded-2xl'>
+                    <button
+                        className='bg-cyan-600 py-1 px-3 rounded-2xl disabled:bg-cyan-800 disabled:text-gray-500'
+                        disabled={comment.length > 3 && comment.length < 200 ? false : true}
+                        onClick={handleSubmitPostComment}
+                    >
                         Reply
                     </button>
                 </aside>

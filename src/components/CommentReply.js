@@ -3,7 +3,6 @@ import CommentReplyFooter from './CommentReplyFooter';
 import CommentReplyHeader from './CommentReplyHeader';
 
 const CommentReply = ({ comment }) => {
-    console.log('YOOOOOOO',  comment);
     
     return (
         <div className='text-white flex p-3 border-b border-gray-600'>
@@ -19,7 +18,10 @@ const CommentReply = ({ comment }) => {
                     idComment={comment._id}
                 />
                 { comment.comment}
-                <CommentReplyFooter />
+                <CommentReplyFooter
+                    likes={comment.likes}
+                    idComment={comment._id}
+                />
             </article>
         </div>
     )

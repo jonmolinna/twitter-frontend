@@ -14,10 +14,6 @@ const CommentReplyHeader = ({ name, username, time, idComment }) => {
     let isUser = username === user.username;
     const token = localStorage.getItem('token-twitter');
 
-
-    console.log('POST', idPost);
-    console.log('COMMENT', idComment);
-
     const handleDeletePostComment = async () => {
         let isDelete = window.confirm('¿Estas seguro de eliminar?');
 
@@ -26,7 +22,7 @@ const CommentReplyHeader = ({ name, username, time, idComment }) => {
                 method: 'PUT',
                 headers: {
                     "Content-type" : "application/json; charset=utf-8",
-                    "authorization": token? `Bearer ${token}` : null,
+                    "authorization": token? ` ${token}` : null,
                 }
             };
 
@@ -35,8 +31,8 @@ const CommentReplyHeader = ({ name, username, time, idComment }) => {
             }
             
         } catch (err) {
-            console.log(err.response);
-            // toast.error(err.response.data.message);
+            // console.log(err.response);
+            toast.error(err.response.data.message);
         }
     };
 

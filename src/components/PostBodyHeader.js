@@ -5,15 +5,22 @@ import { toast } from 'react-hot-toast';
 
 import { Capitalize } from '../util/capitalize';
 import { useAuthState } from '../context/auth';
+import { usePostDispatch } from '../context/post';
 import axios from '../util/axios';
 
 const PostBodyHeader = ({ user, time, idPost }) => {
     const { user: usuario } = useAuthState();
+    const postDispatch = usePostDispatch();
     let isUser = usuario?.username === user?.username;
     const token = localStorage.getItem('token-twitter');
 
     const handleDeletePost = async () => {
-        let isDelete = window.confirm('¿Estas seguro de eliminar?')
+        let isDelete = window.confirm('¿Estas seguro de eliminar?');
+
+        // En caso que elimine en Thread
+        postDispatch({
+            type: 'REMOVE_POST',
+        });
 
         try {
             let options = {
