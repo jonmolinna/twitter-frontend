@@ -6,10 +6,13 @@ import axios from '../util/axios';
 
 const Post = () => {
     const [post, setPost] = useState([]);
+    const [loading, setLoading] = useState(false);
     const token = localStorage.getItem('token-twitter');
 
     useEffect(() => {
         const getPostAll = async () => {
+            setLoading(true);
+
             try {
                 let options = {
                     method: 'GET',
@@ -23,6 +26,8 @@ const Post = () => {
                 setPost(res.data.posts)
             } catch (err) {
                 console.log(err.response);
+            } finally {
+                setLoading(false)
             }
         }
 
@@ -41,9 +46,15 @@ const Post = () => {
                 <PostHeader />
                 <article>
                     {
-                        post && post.map(post => (
-                            <PostBody key={post._id} post={post}/>
-                        ))
+                        loading? (
+                            <div className='text-center mt-3'>
+                                <p className='text-white'>Cargando ...</p>
+                            </div>
+                        ) : (
+                            post && post.map(post => (
+                                <PostBody key={post._id} post={post}/>
+                            ))
+                        )
                     }
                 </article>
             </aside>

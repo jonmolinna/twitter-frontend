@@ -13,7 +13,8 @@ const initialForm = {
 
 const Register = () => {
     const [form, setForm] = useState(initialForm);
-    const [errors, setErrors] = useState({});
+    const [errors, setErrors] = useState(null);
+    const [loading, setLoading] = useState(false);
     let history = useHistory();
 
     const handleChange = (e) => {
@@ -25,6 +26,7 @@ const Register = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true);
 
         try {
             let options = {
@@ -46,16 +48,18 @@ const Register = () => {
             setForm(initialForm);
         } catch (err) {
             setErrors(err.response.data.error);
+        } finally {
+            setLoading(false)
         }
     };
 
     return (
         <div className='h-screen bg-black flex flex-col items-center'>
-            <div className='mt-7 w-80 p-4 bg-black'>
+            <div className='mt-4 w-80 p-4 bg-black'>
                 <h2 className='text-white mb-3'>Únete a Twitter Clone</h2>
                 <form className='flex flex-col ' onSubmit={handleSubmit} autoComplete='off'>
                     <input
-                        className='mb-3 py-3 px-3 outline-none border rounded-md border-white bg-black text-white'
+                        className='mb-3 p-3 outline-none border rounded-md border-white bg-black text-white'
                         type="text" 
                         placeholder='Nombres'
                         name='name'
@@ -63,7 +67,7 @@ const Register = () => {
                         onChange={handleChange}
                     />
                     <input
-                        className='mb-3 py-3 px-3 outline-none border rounded-md border-white bg-black text-white'
+                        className='mb-3 p-3 outline-none border rounded-md border-white bg-black text-white'
                         type="text" 
                         placeholder='Username'
                         name='username'
@@ -71,7 +75,7 @@ const Register = () => {
                         onChange={handleChange}
                     />
                     <input
-                        className='mb-3 py-3 px-3 outline-none border rounded-md border-white bg-black text-white'
+                        className='mb-3 p-3 outline-none border rounded-md border-white bg-black text-white'
                         type="password"
                         placeholder='Contraseña'
                         name='password'
@@ -79,7 +83,7 @@ const Register = () => {
                         onChange={handleChange}
                     />
                     <input
-                        className='mb-3 py-3 px-3 outline-none border rounded-md border-white bg-black text-white'
+                        className='mb-3 p-3 outline-none border rounded-md border-white bg-black text-white'
                         type="password"
                         placeholder='Confirma contraseña'
                         name='confirmPassword'
@@ -87,8 +91,9 @@ const Register = () => {
                         onChange={handleChange}
                     />
                     <button
-                        className='bg-gray-300 p-2 rounded-3xl outline-none text-black'
+                        className='bg-gray-300 p-2 rounded-3xl outline-none text-black disabled:bg-gray-500'
                         type='submit'
+                        disabled={!(form.name && form.username && form.password && form.confirmPassword)? true : false}
                     >
                         Regístrate
                     </button>
@@ -97,6 +102,13 @@ const Register = () => {
                     ¿Ya tienes una cuenta?
                     <Link className='text-cyan-500 ml-1' to="/login">Iniciar sesión</Link>
                 </p>
+                {
+                    loading && (
+                        <div className='text-center mt-2'>
+                            <p className='text-white'>Cargando ...</p>
+                        </div>
+                    )
+                }
                 {
                     errors && <ul className=' mt-5'>
                         {

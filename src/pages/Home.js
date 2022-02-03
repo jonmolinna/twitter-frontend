@@ -14,7 +14,7 @@ const Home = () => {
             <article className='p-3 border-t border-gray-600 sm:border-t-0 sm:border-r'>
                 <Sidebar />
             </article>
-            <article className='flex-1 overflow-y-scroll no-scrollbar' >
+            <article className='flex-1 overflow-y-scroll no-scrollbar max-w-screen-sm' >
                 {
                     post? <Comment /> : <Post />  
                 }

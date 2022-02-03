@@ -5,10 +5,6 @@ import PostBodyHeader from './PostBodyHeader';
 
 const PostBody = ({ post }) => {
 
-    // console.log(post);
-
-    // console.log('POST BODY');
-
     return (
         <div className='text-white flex border-b border-gray-600 p-3'>
             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" className="bi bi-person-circle" viewBox="0 0 16 16">

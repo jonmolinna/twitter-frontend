@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { toast } from 'react-hot-toast';
 
 import axios from '../util/axios';
-import Loading from './Loading';
 
 const PostHeader = () => {
     const [comment, setComment] = useState('');
@@ -106,8 +105,8 @@ const PostHeader = () => {
                 </aside>
                 {
                     loading && (
-                        <div className='border text-center'>
-                            <Loading />
+                        <div className='text-center mt-3'>
+                            <p>Cargando ...</p>
                         </div>
                     )
                 }

@@ -5,10 +5,13 @@ import axios from '../util/axios';
 
 const Follow = () => {
     const [follow, setFollow] = useState(null);
+    const [loading, setLoading] = useState(false);
     const token = localStorage.getItem('token-twitter');
 
     useEffect(() => {
         const getThreeUser = async () => {
+            setLoading(true);
+
             try {
                 let options = {
                     method: 'GET',
@@ -23,6 +26,8 @@ const Follow = () => {
                 
             } catch (err) {
                 console.log(err.response);
+            } finally {
+                setLoading(false);
             }
         }
 
@@ -36,9 +41,15 @@ const Follow = () => {
                 <h2 className='text-white font-semibold'>Who to follow</h2>
                 <div className='mt-2'>
                     {
-                        follow && follow.map(user => (
-                            <FollowUser key={user._id} user={user} />
-                        ))
+                        loading? (
+                            <div className='text-center mt-2'>
+                                <p className='text-white'>Cargando ...</p>
+                            </div>
+                        ) : (
+                            follow && follow.map(user => (
+                                <FollowUser key={user._id} user={user} />
+                            ))
+                        )
                     }
                 </div>
             </div>
