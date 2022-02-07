@@ -1,17 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import PostBody from './PostBody';
 import PostHeader from './PostHeader';
+import Pusher from 'pusher-js';
 
 import axios from '../util/axios';
 
+const pusher = new Pusher('cabae68a0ba3d486f9b5', {
+    cluster: 'us2'
+});
+
 const Post = () => {
     const [post, setPost] = useState([]);
-    const [loading, setLoading] = useState(false);
     const token = localStorage.getItem('token-twitter');
 
     useEffect(() => {
         const getPostAll = async () => {
-            setLoading(true);
 
             try {
                 let options = {
@@ -26,13 +29,33 @@ const Post = () => {
                 setPost(res.data.posts)
             } catch (err) {
                 console.log(err.response);
-            } finally {
-                setLoading(false)
             }
         }
 
+        pusher.unsubscribe('post');
+
         getPostAll();
+
+        const channel = pusher.subscribe('post');
+        channel.bind('newPost', function(data){
+            getPostAll();
+        });
+
+        const channelDelete = pusher.subscribe('deletePost');
+        channelDelete.bind('newDeletePost', function(data){
+            getPostAll()
+        });
+
+        const channelUpdate = pusher.subscribe('updatePost');
+        channelUpdate.bind('newUpdatePost', function(data){
+            getPostAll();
+        });
+
     }, [token]);
+
+    useEffect(() => {
+
+    }, []);
 
     return (
         <div>
@@ -46,15 +69,9 @@ const Post = () => {
                 <PostHeader />
                 <article>
                     {
-                        loading? (
-                            <div className='text-center mt-3'>
-                                <p className='text-white'>Cargando ...</p>
-                            </div>
-                        ) : (
-                            post && post.map(post => (
-                                <PostBody key={post._id} post={post}/>
-                            ))
-                        )
+                        post && post.map(post => (
+                            <PostBody key={post._id} post={post}/>
+                        ))
                     }
                 </article>
             </aside>

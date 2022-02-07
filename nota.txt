@@ -6,3 +6,4 @@ npm install axios
 npm install jwt-decode
 npm install moment
 npm install react-hot-toast
+npm install pusher-js

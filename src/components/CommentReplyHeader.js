@@ -22,7 +22,7 @@ const CommentReplyHeader = ({ name, username, time, idComment }) => {
                 method: 'PUT',
                 headers: {
                     "Content-type" : "application/json; charset=utf-8",
-                    "authorization": token? ` ${token}` : null,
+                    "authorization": token? `Bearer ${token}` : null,
                 }
             };
 
